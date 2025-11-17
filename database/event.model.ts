@@ -136,16 +136,12 @@ EventSchema.pre('save', async function (next) {
 
   // Normalize date to ISO format if modified
   if (this.isModified('date')) {
-    try {
-      const parsedDate = new Date(this.date);
-      if (isNaN(parsedDate.getTime())) {
-        return next(new Error('Invalid date format'));
-      }
-      // Store in ISO format (YYYY-MM-DD)
-      this.date = parsedDate.toISOString().split('T')[0];
-    } catch (error) {
+    const parsedDate = new Date(this.date);
+    if (isNaN(parsedDate.getTime())) {
       return next(new Error('Invalid date format'));
     }
+    // Store in ISO format (YYYY-MM-DD)
+    this.date = parsedDate.toISOString().split('T')[0];
   }
 
   // Normalize time format (HH:MM) if modified
